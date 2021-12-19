@@ -81,6 +81,34 @@ Annotation(heart) <- annotations
 
 save(heart,file="step1.RData")
 ```  
+  
+Output:  
+```
+> head(Annotation(heart))
+GRanges object with 6 ranges and 5 metadata columns:
+                  seqnames        ranges strand |           tx_id   gene_name
+                     <Rle>     <IRanges>  <Rle> |     <character> <character>
+  ENSE00001489430     chrX 276322-276394      + | ENST00000399012      PLCXD1
+  ENSE00001536003     chrX 276324-276394      + | ENST00000484611      PLCXD1
+  ENSE00002160563     chrX 276353-276394      + | ENST00000430923      PLCXD1
+  ENSE00001750899     chrX 281055-281121      + | ENST00000445062      PLCXD1
+  ENSE00001489388     chrX 281192-281684      + | ENST00000381657      PLCXD1
+  ENSE00001719251     chrX 281194-281256      + | ENST00000429181      PLCXD1
+                          gene_id   gene_biotype     type
+                      <character>    <character> <factor>
+  ENSE00001489430 ENSG00000182378 protein_coding     exon
+  ENSE00001536003 ENSG00000182378 protein_coding     exon
+  ENSE00002160563 ENSG00000182378 protein_coding     exon
+  ENSE00001750899 ENSG00000182378 protein_coding     exon
+  ENSE00001489388 ENSG00000182378 protein_coding     exon
+  ENSE00001719251 ENSG00000182378 protein_coding     exon
+  -------
+  seqinfo: 25 sequences from hg38 genome
+> length(Annotation(heart))
+[1] 3021151
+
+```  
+ 
 
 # compute nucleosome signal score per cell
 ```

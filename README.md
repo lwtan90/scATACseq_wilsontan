@@ -67,7 +67,7 @@ Active assay: peaks (501346 features, 0 variable features)
 ```  
 
 
-## Perform annotation of Peaks  
+## Adding annotation to chrom_assay  
 ```
 # extract gene annotations from EnsDb
 annotations <- GetGRangesFromEnsDb(ensdb = EnsDb.Hsapiens.v86)

@@ -23,7 +23,22 @@ barcodefile = "GSE165837_CARE_ATAC_merged_barcodes.txt.gz"
 fragmentfile = "cleaned_sorted_fragment.bed.gz"
 genome = "hg38"
 counts = ReadMtx(mtx=matrixfile,features=featurefile,cells=barcodefile,feature.column=1)
+
+class(counts)
+dim(counts)
 ```  
+  
+Output:  
+```
+class(counts)
+[1] "dgCMatrix"
+attr(,"package")
+[1] "Matrix"
+
+dim(counts)
+[1] 501805  80083
+```  
+
  
 ## Forming Seurat object  
 ```
@@ -38,9 +53,19 @@ chrom_assay <- CreateChromatinAssay(
 
 heart <- CreateSeuratObject(
   counts = chrom_assay,
-  assay = "peaks",
+  assay = "peaks"
 )
 ```  
+  
+Output:  
+```
+> heart
+
+An object of class Seurat 
+501346 features across 79475 samples within 1 assay 
+Active assay: peaks (501346 features, 0 variable features)
+```  
+
 
 ## Perform annotation of Peaks  
 ```
@@ -129,7 +154,7 @@ heart <- RunTFIDF(heart)
 heart <- FindTopFeatures(heart, min.cutoff = 'q0')
 heart <- RunSVD(heart)
 
-pdf("DepthCor.pdf",width=5,height=5)
+png("DepthCor.png",width=2000,height=2000,res=300)
 DepthCor(heart)
 dev.off()
 ```  

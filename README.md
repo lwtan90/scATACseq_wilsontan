@@ -110,9 +110,14 @@ GRanges object with 6 ranges and 5 metadata columns:
 ```  
  
 
-# compute nucleosome signal score per cell
+## compute nucleosome signal score per cell
 ```
 heart <- NucleosomeSignal(object = heart)
+```  
+Output:  
+![alt text](https://github.com/lwtan90/scATACseq_wilsontan/blob/main/img/nucleosome_pattern%20copy.png)  
+
+
 
 # compute TSS enrichment score per cell
 heart <- TSSEnrichment(object = heart, fast = FALSE)

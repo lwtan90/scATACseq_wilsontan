@@ -119,9 +119,14 @@ Output:
 
 
 
-# compute TSS enrichment score per cell
+## compute TSS enrichment score per cell  
+```
 heart <- TSSEnrichment(object = heart, fast = FALSE)
 save(heart,file="step2.RData")
+```  
+Output:
+![alt text](https://github.com/lwtan90/scATACseq_wilsontan/blob/main/img/TSSenrichment.png)  
+  
 
 # Count total fragment
 total_fragments <- CountFragments("cleaned_sorted_fragment.bed.gz")

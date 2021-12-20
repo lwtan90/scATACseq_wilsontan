@@ -127,7 +127,8 @@ save(heart,file="step2.RData")
 Output:
 ![alt text](https://github.com/lwtan90/scATACseq_wilsontan/blob/main/img/TSSenrichment.png)  
   
-
+## other QCs  
+```
 # Count total fragment
 total_fragments <- CountFragments("cleaned_sorted_fragment.bed.gz")
 ind = match(colnames(heart),total_fragments$CB)
@@ -173,7 +174,10 @@ VlnPlot(
 dev.off()
 
 save(heart,file="preQC_heart.RData")
+```  
 
+## FIltering low quality cells  
+```
 heart <- subset(
   x = heart,
   subset = fragments > 2000 &
@@ -185,6 +189,7 @@ heart <- subset(
 )
 heart
 ```  
+  
 
 ### Normalization  
 ```

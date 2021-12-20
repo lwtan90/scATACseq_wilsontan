@@ -175,6 +175,8 @@ dev.off()
 
 save(heart,file="preQC_heart.RData")
 ```  
+Output:  
+![alt text](https://github.com/lwtan90/scATACseq_wilsontan/blob/main/img/QC_violinplot.png)
 
 ## FIltering low quality cells  
 ```

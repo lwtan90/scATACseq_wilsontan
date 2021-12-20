@@ -216,6 +216,9 @@ dev.off()
 save(heart,file="UMAP.RData")
 ```  
 
+Output:  
+![alt text](https://github.com/lwtan90/scATACseq_wilsontan/blob/main/img/UMAP.png)
+
 
 ### Gene Activities  
 ```

@@ -17,6 +17,7 @@ set.seed(1234)
 
 ## Read count matrix  
 ```
+setwd("C:/Users/wlwtan/Dropbox/My PC (CVI-CZL8ZC3)/Documents/tutorial_RData/")
 matrixfile = "GSE165837_CARE_ATAC_merged_matrix.mtx.gz" 
 featurefile = "GSE165837_CARE_ATAC_merged_features.txt.gz"
 barcodefile = "GSE165837_CARE_ATAC_merged_barcodes.txt.gz"
@@ -249,7 +250,10 @@ dev.off()
 save(heart,file="gene.activities.RData")
 ```  
 
-## Merge scRNA-seq and scATAC-seq
+## Merge scRNA-seq and scATAC-seq  
+Note: we can use scRNA-seq to infer cell type, and subsequently perform label transfer to annotate scATAC-seq.  
+This RNA-seq data has been processed using seurat, and stored in heart.rds.  
+
 ```
 #### Load RNA first (and change to heart.rna)
 heart.rna = readRDS("heart.rds")
@@ -279,8 +283,11 @@ object = heart.rna,
 "21" = "Adipose"
 
 )
+save(heart.rna,file="heart.rna.RData")
+```  
 
-#### Load ATAC-seq
+## Load scATAC-seq Data  
+```
 load("heart.rna.RData")
 load("gene.activities.RData")
 load("heart.gene.RData")
@@ -311,14 +318,6 @@ p1 | p2
 dev.off()
 
 
-
-png("prediction.score.png",width=2000,height=2000,res=300)
-hist(heart$prediction.score.max)
-abline(v = 0.5, col = "red")
-dev.off()
-
-
-
 heart.filtered <- subset(heart, subset = prediction.score.max > 0.5)
 heart.filtered$predicted.id <- factor(heart.filtered$predicted.id, levels = levels(pbmc.rna))  # to make the colors match
 
@@ -335,7 +334,8 @@ heart = heart.filtered
 ```  
 
 
-### Running Cicero  
+## Running Cicero  
+
 ```
 library(monocle3)
 require(cicero)
@@ -371,73 +371,20 @@ save(linked ,file="linked.RData")
 ```  
 
 
-#### Call peaks
+
+## Differential ATAC-seq between clusters  
 ```
-peaks <- CallPeaks(object = heart,group.by = "predicted.id",macs2.path = "macs2")
-```
-
-### Visualizing Peaks  
-```
-require(rtracklayer)
-gene_anno = readGFF("gencode.v38.annotation.gtf")
-gene_anno$chromosome = gene_anno$seqid
-gene_anno$gene = gene_anno$gene_id
-gene_anno$transcript = gene_anno$transcript_id
-gene_anno$symbol = gene_anno$gene_name
-
-options(bitmapType='cairo')
-png("connection_TTN.png",width=3000,height=1500,res=300)
-plot_connections(conns, "chr2", 178244554, 179088858,gene_model = gene_anno, coaccess_cutoff = 0.25, connection_width = 0.5, collapseTranscripts = "longest" )
-dev.off()
-```  
-
-
-
-pos <- subset(gene_anno, strand == "+")
-pos <- pos[order(pos$start),] 
-# remove all but the first exons per transcript
-pos <- pos[!duplicated(pos$transcript),] 
-# make a 1 base pair marker of the TSS
-pos$end <- pos$start + 1 
-
-neg <- subset(gene_anno, strand == "-")
-neg <- neg[order(neg$start, decreasing = TRUE),] 
-# remove all but the first exons per transcript
-neg <- neg[!duplicated(neg$transcript),] 
-neg$start <- neg$end - 1
-
-gene_annotation_sub <- rbind(pos, neg)
-
-# Make a subset of the TSS annotation columns containing just the coordinates 
-# and the gene name
-gene_annotation_sub <- gene_annotation_sub[,c("chromosome", "start", "end", "symbol")]
-
-# Rename the gene symbol column to "gene"
-names(gene_annotation_sub)[4] <- "gene"
-
-heart.cds <- annotate_cds_by_site(heart.cds, gene_annotation_sub)
-heart.cds <- estimate_size_factors(heart.cds)
-heart.cds <- preprocess_cds(heart.cds, method = "LSI")
-heart.cds <- reduce_dimension(heart.cds, reduction_method = 'UMAP', preprocess_method = "LSI")
-heart.cds <- cluster_cells(heart.cds)
-heart.cds <- learn_graph(heart.cds)
-# cell ordering can be done interactively by leaving out "root_cells"
-heart.cds <- order_cells(heart.cds)
-
-
-
-
-
-################### Differential ATAC-seq between clusters ###################
 load("link.added.heart.RData")
 Idents(heart) = heart$predicted.id
 DefaultAssay(heart) <- 'peaks'
 heart.markers <- FindAllMarkers(heart, only.pos = TRUE, min.pct = 0.1, logfc.threshold = 0.2)
+```  
 
 
 
-###FeaturePlot
-options(bitmapType='cairo')
+## FeaturePlot  
+```
+options(bitmapType='cairo')  
 plot1 <- VlnPlot(
   object = heart,
   features = "chr3-69828757-69829257",
@@ -453,8 +400,6 @@ png("chr3-69828757-69829257_featureplot.png",width=2500,height=1500,res=300)
 plot1 | plot2
 dev.off()
 
-# set plotting order
-##levels(heart) <- c("CM","FB","ENDO","SMC")
 
 options(bitmapType='cairo')
 png("chr5-16539211-16539711_Region.png",width=5000,height=3000,res=300)
@@ -465,7 +410,7 @@ CoveragePlot(
   extend.downstream = 40000
 )
 dev.off()
-
+```  
 
 
 

@@ -14,6 +14,8 @@ require(data.table)
 set.seed(1234)
 ```  
 
+## Link to Rdata  
+Link to R temp data(https://drive.google.com/drive/folders/1p_sj0EcSj3jvbKIALuS0LtYoFBP1eh1L?usp=sharing).  
 
 ## Read count matrix  
 ```

@@ -415,15 +415,17 @@ dev.off()
 
 
 options(bitmapType='cairo')
-png("chr5-16539211-16539711_Region.png",width=5000,height=3000,res=300)
+png("chr3-69828757-69829257_Region.png",width=5000,height=3000,res=300)
 CoveragePlot(
   object = heart,
-  region = "chr5-16539211-16539711",
+  region = "chr3-69828757-69829257",
   extend.upstream = 40000,
   extend.downstream = 40000
 )
 dev.off()
 ```  
+![alt text](https://github.com/lwtan90/scATACseq_wilsontan/blob/main/img/chr3-69828757-69829257_Region.png)  
+![alt text](https://github.com/lwtan90/scATACseq_wilsontan/blob/main/img/chr3-69828757-69829257_featureplot.png)  
 
 
 ## Motif Analysis  
